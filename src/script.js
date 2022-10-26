@@ -41,8 +41,8 @@ let gameboard = (function (){
     let column = this.cellIndex;
     gameboard[row][column] = playerTurn.display;
     this.textContent = playerTurn.display ;
-    _changePlayerTurn();
     _isEndGame();
+    
   };
 
   function _changePlayerTurn(){
@@ -54,6 +54,7 @@ let gameboard = (function (){
     line1 = (gameboard[0].every( e => (e == playerTwo.display)) || gameboard[0].every( e => (e == playerOne.display)));
     line2 = (gameboard[1].every( e => (e == playerTwo.display)) || gameboard[1].every( e => (e == playerOne.display)));
     line3 = (gameboard[2].every( e => (e == playerTwo.display)) || gameboard[2].every( e => (e == playerOne.display)));
+    lines = (line1 || line2 || line3);
     // Vertical
     columns = false;
     for (i=0 ; i <=2; i++){
@@ -62,17 +63,20 @@ let gameboard = (function (){
         column.push(gameboard[j][i]);
       }
       columns = (column.every( e => (e == playerTwo.display)) || column.every( e => (e == playerOne.display)));
+      if (columns == true) break;
     };
     // Diagonal
-
+ 
     //Checagem
-    if (line1 == true || line2 == true || line3 == true || columns == true ){
-      console.log("Fim de jogo!");
+    if (lines == true || columns == true ){
+      winner = playerTurn.name
+      alerts.innerHTML = `O jogador ${winner} ganhou!`
+      playerTurn = null;
+    } else {
+      _changePlayerTurn();
     }
   }
 })();
-
-
 
 // Player factory
 const player = (name, display) => {
