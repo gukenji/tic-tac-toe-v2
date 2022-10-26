@@ -1,5 +1,5 @@
 let gameboard = (function (){
-  let gameboard = Array.from(Array(3), () => new Array(3));
+  let gameboard = Array.from(Array(3), () => new Array(3).fill(null));
   
   // DOM
   let cel = document.getElementsByTagName('td');
@@ -8,26 +8,17 @@ let gameboard = (function (){
   //bind events
   newGameButton.addEventListener('click',newGame);
 
-  for(i=0 ; i < cel.length; i++){
-    cel[i].addEventListener('click',newMove);
-  };
-
-  function _render(){
-    
-  }
-
-  function newMove(){
-    let row = this.parentElement.rowIndex;
-    let column = this.cellIndex;
-    this.textContent = gameboard[row][column] ;
-    console.log(gameboard);
-
-  };
 
   function newGame(){
     _createPlayers();
-    result = _drawPlayers();
-    console.log(result) ;
+    playerTurn = _drawPlayers(playerOne, playerTwo);
+    _newMove();
+   };
+  
+   function _newMove(){
+    for(i=0 ; i < cel.length; i++){
+      cel[i].addEventListener('click', _render);
+    }
    }
 
   function _createPlayers(){
@@ -39,12 +30,46 @@ let gameboard = (function (){
     playerTwo = player(playerTwoName, playerTwoStyle);
   }
 
-  function _drawPlayers(){
+  function _drawPlayers(playerOne, playerTwo){
     let result = Math.floor(Math.random() * (2 - 1 + 1) ) + 1;
     alerts.innerHTML = `O jogador ${result} irá começar!`
-    return result;
+    return result == 1 ? playerOne : playerTwo;
   }
 
+  function _render(){
+    let row = this.parentElement.rowIndex;
+    let column = this.cellIndex;
+    gameboard[row][column] = playerTurn.display;
+    this.textContent = playerTurn.display ;
+    _changePlayerTurn();
+    _isEndGame();
+  };
+
+  function _changePlayerTurn(){
+    playerTurn == playerOne ? playerTurn = playerTwo : playerTurn = playerOne;
+  }
+
+  function _isEndGame(){
+    // Horizontal
+    line1 = (gameboard[0].every( e => (e == playerTwo.display)) || gameboard[0].every( e => (e == playerOne.display)));
+    line2 = (gameboard[1].every( e => (e == playerTwo.display)) || gameboard[1].every( e => (e == playerOne.display)));
+    line3 = (gameboard[2].every( e => (e == playerTwo.display)) || gameboard[2].every( e => (e == playerOne.display)));
+    // Vertical
+    columns = false;
+    for (i=0 ; i <=2; i++){
+      column = [];
+      for(j=0 ; j<=2 ; j++){
+        column.push(gameboard[j][i]);
+      }
+      columns = (column.every( e => (e == playerTwo.display)) || column.every( e => (e == playerOne.display)));
+    };
+    // Diagonal
+
+    //Checagem
+    if (line1 == true || line2 == true || line3 == true || columns == true ){
+      console.log("Fim de jogo!");
+    }
+  }
 })();
 
 
