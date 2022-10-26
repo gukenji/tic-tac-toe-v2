@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jogo da Velha</title>
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <h1>Jogo da Velha Hardcore</h1>
+    <div class="playerContainer">
+      <div class="newPlayer">
+        <p>Jogador 1</p>
+        <div class="flex">
+          <p>Nome<input type="text" id="playerOneName"/></p>
+          <p>Estilo<input type="text" id ="playerOneStyle"/></p>
+        </div>
+      </div>
+      <div class="newPlayer">
+        <p>Jogador 2</p>
+        <div class="flex">
+          <p>Nome<input type="text" id="playerTwoName"/></p>
+          <p>Estilo<input type="text" id="playerTwoStyle"/></p>
+        </div>
+      </div>
+    </div>
+    <table>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <div class="newGame">
+      <input type="button" value="NOVO JOGO" id="newGame" />
+    </div>
+    <div >
+      <p id="alerts"></p>
+    </div>
+    <script src="src/script.js"></script>
+  </body>
+</html>
