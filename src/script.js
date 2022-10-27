@@ -80,6 +80,8 @@ let gameboard = (function (){
 
   function _changePlayerTurn(){
     playerTurn == playerOne ? playerTurn = playerTwo : playerTurn = playerOne;
+    alerts.innerHTML = `Turno do jogador ${playerTurn.name}!`
+
   }
 
   function _isEndGame(){
