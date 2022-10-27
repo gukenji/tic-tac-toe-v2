@@ -92,3 +92,15 @@ input[type="button"]:hover{
   display: flex;
   gap: 20px;
 }
+
+#alerts {
+  padding: 20px;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}

@@ -10,14 +10,40 @@ let gameboard = (function (){
 
 
   function newGame(){
+    alerts.className ="";
+    if (_checkNames() && _checkStyles()) {
+    _cleanBoard();
     _createPlayers();
     playerTurn = _drawPlayers(playerOne, playerTwo);
     _newMove();
+  } else {
+    _errorMessages();
+  }
    };
-  
-   function _newMove(){
+
+   function _checkNames(){
+    let playerOneNameLen = document.getElementById('playerOneName').textLength;
+    let playerTwoNameLen = document.getElementById('playerTwoName').textLength;
+    return (playerOneNameLen >0 && playerTwoNameLen > 0) ? true : false;
+   }
+  function _checkStyles(){
+    let playerOneStyleLen = document.getElementById('playerOneStyle').textLength;
+    let playerTwoStyleLen = document.getElementById('playerTwoStyle').textLength;
+    let playerOne = document.getElementById('playerOneStyle').value;
+    let playerTwo = document.getElementById('playerTwoStyle').value;
+    return (playerOneStyleLen == 1 && playerTwoStyleLen ==1 && playerOne != playerTwo) ? true : false
+  }
+
+  function _errorMessages(){
+    alerts.classList.add("red");
+    _checkStyles() ? alerts.innerHTML = `Os jogadores precisam ter nomes!` : 
+                    alerts.innerHTML = `O estilo do jogador só pode ter 1 caracter e devem ser diferentes!`;
+  }
+
+  function _cleanBoard(){
+    gameboard = Array.from(Array(3), () => new Array(3).fill(null));
     for(i=0 ; i < cel.length; i++){
-      cel[i].addEventListener('click', _render);
+      cel[i].textContent = "";
     }
    }
 
@@ -35,6 +61,13 @@ let gameboard = (function (){
     alerts.innerHTML = `O jogador ${result} irá começar!`
     return result == 1 ? playerOne : playerTwo;
   }
+
+  function _newMove(){
+    for(i=0 ; i < cel.length; i++){
+      cel[i].addEventListener('click', _render);
+    }
+   }
+
 
   function _render(){
     let row = this.parentElement.rowIndex;
@@ -66,13 +99,27 @@ let gameboard = (function (){
       if (columns == true) break;
     };
     // Diagonal
- 
+    diag1 = [];
+    diag2 =[];
+    for (i=0 ; i<=2; i++){
+      diag1.push(gameboard[i][i]);
+      diag2.push(gameboard[2-i][i]);
+    }
+    diag1 = (diag1.every( e => (e == playerTwo.display)) || diag1.every( e => (e == playerOne.display)));
+    diag2 = (diag2.every( e => (e == playerTwo.display)) || diag2.every( e => (e == playerOne.display)));
+    diags = (diag1 || diag2)
+
     //Checagem
-    if (lines == true || columns == true ){
+    if (lines == true || columns == true || diags == true){
+      alerts.classList.add("green");
       winner = playerTurn.name
       alerts.innerHTML = `O jogador ${winner} ganhou!`
       playerTurn = null;
-    } else {
+    } else if(gameboard[0].every (e => e != null) && gameboard[1].every (e => e != null) && gameboard[2].every (e => e != null)) {
+      alerts.innerHTML = `Empatou!`
+      playerTurn = null;
+    }
+     else {
       _changePlayerTurn();
     }
   }
